@@ -65,7 +65,38 @@ public class Arrays {
         person[0] = scanner.next();
         System.out.println(person[0]);
 
-        // Przykład 6 i przykład 5
+        //przykład 5
+
+        int max = 0;
+        int min = 0;
+
+        for(int i = 0; i < numbers.length; i++){
+            if(numbers[i] > max) max = numbers[i];
+            if(numbers[i] < min) min = numbers[i];
+            System.out.println("El [" + i + "] = " + numbers[i]);
+        }
+        System.out.println("Zmiana miejsc");
+        for (int j = 0;j < numbers.length; j++){
+            if(numbers[j] == max){
+                numbers[j] = min;
+            }
+            else if (numbers[j] == min) numbers[j] = max;
+            System.out.println("El [" + j + "] = " + numbers[j]);
+        }
+        //przykład 6
+        System.out.println("Odwrócenie tablicy\n");
+        int numA;
+        int numB;
+        for(int i = 0; i < numbers.length/2;i++){
+            numA = numbers[i]; // 0
+            numB = numbers[numbers.length - 1 - i];/// 9 - 1 - 0 = 8
+            numbers[i] = numB;
+            numbers[numbers.length - 1 - i] = numA;
+        }
+        for(int i = 0; i < numbers.length; i++){
+            System.out.println("El [" + i + "] = " + numbers[i]);
+        }
+        // przykład 4
 
 
     }
