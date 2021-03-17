@@ -9,6 +9,7 @@ public class Main {
         Rent rent = new Rent();
 
 
+
         Scanner scanner = new Scanner(System.in);
         boolean stan = true;
         do{
