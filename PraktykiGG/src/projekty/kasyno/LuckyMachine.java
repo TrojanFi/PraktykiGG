@@ -1,5 +1,6 @@
 package projekty.kasyno;
 
+import javax.crypto.NoSuchPaddingException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -11,7 +12,9 @@ public class LuckyMachine {
 
     public void luckyMachineGame(Player player) {
         boolean playAgain = false;
+        boolean betAgain = true;
         double reward = 0;
+        double bet = 0;
         int[] luckyNumbers = new int[3];
         for(int i = 0; i < 3; i++){
             luckyNumbers[i] = random.nextInt(20); // 0 - 19
@@ -30,23 +33,36 @@ public class LuckyMachine {
                     System.out.println(number + "\t");
                 }
                 System.out.println("\n Twoje saldo = " + player.getMoney());
-                System.out.println("Podaj kwotę którą chcesz postawić?");
-                double bet = scanner.nextDouble();
-                player.setMoney(player.getMoney() - bet);
+                do {
+                    System.out.println("Podaj kwotę którą chcesz postawić?");
+                    bet = scanner.nextDouble();
+                    if(bet > 0){
+                        if(player.getMoney() < bet) System.out.println("Nie masz funduszy by tyle obstawić!");
+                        else{
+                            player.setMoney(player.getMoney() - bet);
+                            betAgain = false;
+                        }
+                    }
+                    else if(bet < 0){
+                        System.out.println("Złe dane");
+                    }
+                }while (betAgain);
                 System.out.println("Twoje saldo po tranzakcji = " + player.getMoney());
                 System.out.println("Losowanie liczby...");
                 TimeUnit.SECONDS.sleep(1);
                 int yourNumber = random.nextInt(20);
                 System.out.println("\nTwoja liczba to = " + yourNumber);
 
+                boolean youCanPlay = false;
                 for (int number : luckyNumbers) {
                     if (number == yourNumber) {
                         System.out.println("Trafiono szczęśliwą liczbę!!!!!\n" +
                                 "liczba szczęśliwa = " + number + ", twoja liczba = " + yourNumber);
                         strike++;
+                        youCanPlay = true;
                     }
                 }
-                if (strike > 0) {
+                if (strike > 0 && youCanPlay && strike < 3) {
                     boolean stan = true;
                     do {
                         System.out.println("Masz serie = " + strike + "\n" +
@@ -54,47 +70,52 @@ public class LuckyMachine {
                         char choice = scanner.next().charAt(0);
                         switch (choice) {
                             case 'y' -> {
+                                player.setMoney(player.getMoney() + bet);
                                 playAgain = true;
                                 stan = false;
                             }
                             case 'n' -> {
                                 if (strike == 1) {
                                     reward += bet * 1.5;
-                                    player.setMoney(player.getMoney() + reward);
-                                    strike = 0;
-                                    reward = 0;
-                                } else if (strike == 2) {
+                                } else {
                                     reward += bet * 2;
-                                    player.setMoney(player.getMoney() + reward);
-                                    strike = 0;
-                                    reward = 0;
-                                } else if (strike == 3) {
-                                    reward += bet * 3;
-                                    player.setMoney(player.getMoney() + reward);
-                                    strike = 0;
-                                    reward = 0;
                                 }
+                                player.setMoney(player.getMoney() + reward);
+                                strike = 0;
+                                reward = 0;
+                                playAgain = false;
                                 stan = false;
                             }
                             default -> System.out.println("Zły wybór");
                         }
                     } while (stan);
-
-
-                } else {
+                }
+                else if (strike == 3) {
+                    reward += bet * 3;
+                    player.setMoney(player.getMoney() + reward);
+                    System.out.println("Masz strike 3 i wygrywasz największy bonus = " + player.getMoney());
+                    strike = 0;
+                    reward = 0;
+                    playAgain = false;
+                }
+                else {
                     System.out.println("Nie trafiłeś szczęśliwej liczby :(");
                     strike = 0;
                     reward = 0;
                 }
-                if (!playAgain) {
+                if (!playAgain && player.getMoney() > 0) {
                     System.out.println("chcesz znowu zagrać ? tak [y] nie [n]");
                     String choice = scanner.next();
                     if (choice.equals("n")) play = false;
+                }
+                else if (player.getMoney() <= 0){
+                    play = false;
                 }
 
             } while (play);
         }catch (Exception exception){
             System.out.println("Error");
+            player.setMoney(bet);
             scanner.next();
         }
     }

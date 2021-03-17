@@ -5,12 +5,23 @@ public class Player {
     private String name;
     private double money;
     private int age;
-
+    private int rent;
     // alt + insert -> consrtuctor
-    public Player(String name, double money, int age) {
+
+
+    public Player(String name, double money, int age, int rent) {
         this.name = name;
         this.money = money;
         this.age = age;
+        this.rent = rent;
+    }
+
+    public int getRent() {
+        return rent;
+    }
+
+    public void setRent(int rent) {
+        this.rent = rent;
     }
 
     public String getName() {
