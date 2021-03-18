@@ -1,6 +1,7 @@
 package projekty.kasyno;
 
 import javax.crypto.NoSuchPaddingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -15,10 +16,31 @@ public class LuckyMachine {
         boolean betAgain = true;
         double reward = 0;
         double bet = 0;
+
         int[] luckyNumbers = new int[3];
+
+
         for(int i = 0; i < 3; i++){
-            luckyNumbers[i] = random.nextInt(20); // 0 - 19
-        }
+            boolean newNumber = false;
+            if(i == 0) luckyNumbers[i] = random.nextInt(20); // 0 - 19
+                if(i > 0) {
+                    do {
+                        int newGeneratedNumber =  random.nextInt(20); // 0 - 19
+                        for (int element: luckyNumbers) {
+                            if (element == newGeneratedNumber) {
+                                newNumber = true;
+                                break;
+                            }
+                        }
+                        luckyNumbers[i] = newGeneratedNumber;
+                    } while (newNumber);
+
+                }
+
+            }
+
+
+
         boolean play = true;
         int strike = 0;
         try {

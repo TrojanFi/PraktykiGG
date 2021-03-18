@@ -21,8 +21,8 @@ public class Main {
             array[j] = array[j+1];
             System.out.println(array[j]);
         }
-
-        stanKoszyka -= 1;
+        array[array.length -1 ] = 0;
+//        stanKoszyka -= 1;
         System.out.println("Po usunięciu:");
         for(int i = 0; i < stanKoszyka; i++){
             System.out.println(array[i]);

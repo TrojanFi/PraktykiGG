@@ -1,11 +1,15 @@
 package projekty.kasyno;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
 
     private String name;
     private double money;
     private int age;
     private int rent;
+    private List<String> ourRewards = new ArrayList<>(20);
     // alt + insert -> consrtuctor
 
 
@@ -14,6 +18,14 @@ public class Player {
         this.money = money;
         this.age = age;
         this.rent = rent;
+    }
+
+    public List<String> getOurRewards() {
+        return this.ourRewards;
+    }
+
+    public void setOurRewards(String ourRewards) {
+        this.ourRewards.add(ourRewards);
     }
 
     public int getRent() {
